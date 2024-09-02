@@ -114,3 +114,81 @@ function main(str) {
   return strs;
 }
 ```
+
+### 中文排版(在中英字符、数字、标点和货币符号之间添加空格)
+> From 阿立
+
+```js
+function main(text) {
+    // 使用正则表达式匹配并在中英字符、数字、标点和货币符号之间添加空格
+    return text.replace(/([\u4e00-\u9fa5])([a-zA-Z0-9¥$€£₹₩₽₺₨₦₫₴₭₲₡₣₤₱])/g, '$1 $2')
+      .replace(/([a-zA-Z0-9¥$€£₹₩₽₺₨₦₫₴₭₲₡₣₤₱])([\u4e00-\u9fa5])/g, '$1 $2')
+      .replace(/([\u4e00-\u9fa5])([,.!?;:¥$€£₹₩₽₺₨₦₫₴₭₲₡₣₤₱])/g, '$1$2')
+      .replace(/([,.!?;:¥$€£₹₩₽₺₨₦₫₴₭₲₡₣₤₱])([\u4e00-\u9fa5])/g, '$1 $2');
+}
+```
+
+### 复制抖音评论去除用户名
+> From 阿立
+
+```js
+function main(text) {
+    // 使用正则表达式匹配并删除 ^@.*: 部分
+    const regex = /^@.*?:/gm;
+    const cleanedText = text.replace(regex, '').trim();
+
+    return cleanedText;
+}
+```
+
+### 哔哩哔哩RSS 复制UID
+> From 阿立
+
+```js
+function main(text) {
+    const regex = /UID:(\d+)/g;
+    let match;
+    const results = [];
+    const prefix = "https://rsshub.app/bilibili/user/dynamic/";
+
+    while ((match = regex.exec(text)) !== null) {
+        results.push(prefix + match[1]);
+    }
+
+    return results.length === 1 ? results[0] : results;
+}
+```
+
+### 精简App Store分享链接
+> From 阿立
+
+```js
+function main(url) {
+    // 使用正则表达式提取国家代码和ID部分
+    const regex = /https:\/\/apps\.apple\.com\/([a-z]{2})\/app\/.*\/id(\d+)/;
+    const match = url.match(regex);
+
+    if (match) {
+        // 构建精简后的链接
+        const countryCode = match[1];
+        const appId = match[2];
+        const simplifiedUrl = `https://apps.apple.com/${countryCode}/app/id${appId}`;
+        return simplifiedUrl;
+    } else {
+        return "Invalid URL";
+    }
+}
+```
+
+### 删除多余的空行段落
+> From 阿立
+
+```js
+function removeEmptyLines(text) {
+    return text.split('\n').filter(line => line.trim() !== '').join('\n');
+}
+
+function main(text) {
+    return removeEmptyLines(text);
+}
+```
